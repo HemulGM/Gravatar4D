@@ -74,8 +74,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 18
-      ExplicitWidth = 761
     end
   end
   object Memo1: TMemo

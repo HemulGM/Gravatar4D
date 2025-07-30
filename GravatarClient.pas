@@ -32,7 +32,7 @@ uses
 
 type
   EGravatar = type Exception;
-
+  TGravatarImageType = (gitPNG, gitJPG, gitBMP);
   TGravatarAccount = record
     Domain: String;
     Display: String;
@@ -74,6 +74,7 @@ type
                          const DefaultImage: string = 'identicon'): string;
 
     function LoadAvatar(const Email: string;
+                       out GravatarImageType: TGravatarImageType;
                        const Size: Integer = 80;
                        const DefaultImage: string = 'identicon'): TGraphic;
 
@@ -234,7 +235,9 @@ begin
 end;
 
 function TGravatarClient.LoadAvatar(const Email: string;
-  const Size: Integer; const DefaultImage: string): TGraphic;
+                                    out GravatarImageType: TGravatarImageType;
+                                    const Size: Integer;
+                                    const DefaultImage: string): TGraphic;
 var
   AvatarUrl: string;
   Response: IHTTPResponse;
@@ -251,11 +254,20 @@ begin
       Stream.Position := 0;
       ContentType := LowerCase(Response.HeaderValue['content-type']);
       if Pos('image/jpeg', ContentType) > 0 then
-        Result := TJPEGImage.Create
+      begin
+        Result := TJPEGImage.Create;
+        GravatarImageType := gitJPG;
+      end
       else if Pos('image/png', ContentType) > 0 then
+      begin
+        GravatarImageType := gitPNG;
         Result := TPNGImage.Create
+      end
       else
+      begin
+        GravatarImageType := gitBMP;
         Result := TBitmap.Create;
+      end;
       Result.LoadFromStream(Stream);
     end
     else

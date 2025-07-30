@@ -52,19 +52,20 @@ uses
 var
   Gravatar: TGravatarClient;
   Avatar: TGraphic;
+  ImageType: TGravatarImageType;   
 begin
   Gravatar := TGravatarClient.Create;
   try
     // Load avatar into a TGraphic object
-    Avatar := Gravatar.LoadAvatar('example@example.com', 100, 'identicon');
+    Avatar := Gravatar.LoadAvatar('example@example.com', ImageType, 100, 'identicon');
     try
-      // Save to file (determines format automatically)
-      if Avatar is TJPEGImage then
-        Avatar.SaveToFile('avatar.jpg')
-      else if Avatar is TPNGImage then
-        Avatar.SaveToFile('avatar.png')
-      else
-        Avatar.SaveToFile('avatar.bmp');
+  	  //if you want to know file type, check "ImageType"
+	  case ImageType of
+	    gitPNG: lAvatar.SaveToFile('avatar.png');
+	    gitJPG: lAvatar.SaveToFile('avatar.jpg');
+	    else
+		  lAvatar.SaveToFile('avatar.bmp');
+	  end;
     finally
       Avatar.Free;
     end;

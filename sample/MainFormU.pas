@@ -42,6 +42,7 @@ var
   lEmail: String;
   lAccount: TGravatarAccount;
   lProfile: TGravatarProfile;
+  lImageType: TGravatarImageType;
 begin
     // Email di esempio
     lEmail := LabeledEdit1.Text;
@@ -54,9 +55,17 @@ begin
       MemoRef.Lines.Add(Format('URL Avatar per %s:', [lEmail]));
       MemoRef.Lines.Add(lGravatar.GetAvatarUrl(lEmail, Image1.Width, 'identicon'));
 
-      lAvatar := lGravatar.LoadAvatar(lEmail, Image1.Width, 'identicon');
+      lAvatar := lGravatar.LoadAvatar(lEmail, lImageType, Image1.Width, 'identicon');
       try
         Image1.Picture.Assign(lAvatar);
+
+        //if you want to know file type, check lImageType
+        case lImageType of
+          gitPNG: lAvatar.SaveToFile('avatar.png');
+          gitJPG: lAvatar.SaveToFile('avatar.jpg');
+          else
+            lAvatar.SaveToFile('avatar.bmp');
+        end;
       finally
         lAvatar.Free;
       end;

@@ -40,6 +40,7 @@ var
   lEmail, lFName: String;
   lAccount: TGravatarAccount;
   lProfile: TGravatarProfile;
+  lImageType: TGravatarImageType;
 begin
   try
     Writeln('Gravatar Client Demo');
@@ -57,16 +58,15 @@ begin
 
       // Loading Avatar
       Writeln('Loading Avatar...');
-      lAvatar := lGravatar.LoadAvatar(lEmail, 200, 'identicon');
+      lAvatar := lGravatar.LoadAvatar(lEmail, lImageType, 200, 'identicon');
       try
         // Save of disk if you want
-        lFName := '';
-        if lAvatar is TJPEGImage then
-          lFName := 'avatar.jpg'
-        else if lAvatar is TPNGImage then
-          lFName := 'avatar.png'
-        else
-          lFName := 'avatar.bmp';
+        case lImageType of
+          gitPNG: lFName := 'avatar.png';
+          gitJPG: lFName := 'avatar.jpg';
+          else
+            lFName := 'avatar.bmp';
+        end;
         lAvatar.SaveToFile(lFName);
         Writeln('Avatar saved as "' + lFName + '"');
       finally
