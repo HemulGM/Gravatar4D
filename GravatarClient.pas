@@ -60,26 +60,24 @@ type
 
   TGravatarClient = class
   private
-    FApiKey: string;
     FHttpClient: THttpClient;
     function GetEmailHash(const Email: string): string;
     function BuildAvatarUrl(const EmailHash: string;
                            const Size: Integer = 80;
                            const DefaultImage: string = 'identicon'): string;
   public
-    constructor Create(const ApiKey: string = '');
+    constructor Create;
     destructor Destroy; override;
 
-    // Funzionalità base: ottieni URL avatar
     function GetAvatarUrl(const Email: string;
                          const Size: Integer = 80;
                          const DefaultImage: string = 'identicon'): string;
 
-    // Funzionalità base: carica avatar in una TGraphic
     function LoadAvatar(const Email: string;
                        const Size: Integer = 80;
                        const DefaultImage: string = 'identicon'): TGraphic;
 
+    function GetProfileUrl(const Email: string): String;
     function GetProfile(const Email: string; out Profile: TGravatarProfile): Boolean;
   end;
 
@@ -102,9 +100,9 @@ end;
 
 { TGravatarClient }
 
-constructor TGravatarClient.Create(const ApiKey: string);
+constructor TGravatarClient.Create;
 begin
-  FApiKey := ApiKey;
+  inherited;
   FHttpClient := THttpClient.Create;
 end;
 
@@ -136,20 +134,20 @@ end;
 
 function TGravatarClient.GetProfile(const Email: string; out Profile: TGravatarProfile): Boolean;
 var
-  EmailHash, ProfileUrl: string;
+  ProfileUrl: string;
   Response: IHTTPResponse;
   JSONObj, EntryObj, AccountObj: TJSONObject;
   EntryArr, AccountsArr: TJSONArray;
   I: Integer;
 begin
   Result := False;
-  EmailHash := GetEmailHash(Email);
-  ProfileUrl := Format('https://www.gravatar.com/%s.json', [EmailHash]);
-
+  ProfileUrl := GetProfileUrl(Email);
   try
     Response := FHttpClient.Get(ProfileUrl);
     if Response.StatusCode <> 200 then
+    begin
       Exit(False);
+    end;
 
     JSONObj := TJSONObject.ParseJSONValue(Response.ContentAsString) as TJSONObject;
     try
@@ -206,8 +204,18 @@ begin
     end;
   except
     on E: Exception do
-      raise;
+    begin
+      raise EGravatar.CreateFmt('Cannot retrieve profile: %s - %s', [E.ClassName, E.Message]);
+    end;
   end;
+end;
+
+function TGravatarClient.GetProfileUrl(const Email: string): String;
+var
+  lEmailHash: string;
+begin
+  lEmailHash := GetEmailHash(Email);
+  Result := Format('https://www.gravatar.com/%s.json', [lEmailHash]);
 end;
 
 function TGravatarClient.BuildAvatarUrl(const EmailHash: string;
@@ -252,7 +260,8 @@ begin
     end
     else
     begin
-      raise EGravatar.Create('Errore nel caricamento dell''avatar: ' + IntToStr(Response.StatusCode));
+      raise EGravatar.CreateFmt('Cannot load avatar - Status Code %d - Status Text %s',
+        [Response.StatusCode, Response.StatusText]);
     end;
   finally
     Stream.Free;
