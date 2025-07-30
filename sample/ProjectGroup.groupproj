@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{8E9E85F5-FDD7-4FA1-9E9B-964E9C566628}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="GravatarDEMO.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GravatarVCLDEMO.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="GravatarDEMO">
+        <MSBuild Projects="GravatarDEMO.dproj"/>
+    </Target>
+    <Target Name="GravatarDEMO:Clean">
+        <MSBuild Projects="GravatarDEMO.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GravatarDEMO:Make">
+        <MSBuild Projects="GravatarDEMO.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GravatarVCLDEMO">
+        <MSBuild Projects="GravatarVCLDEMO.dproj"/>
+    </Target>
+    <Target Name="GravatarVCLDEMO:Clean">
+        <MSBuild Projects="GravatarVCLDEMO.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GravatarVCLDEMO:Make">
+        <MSBuild Projects="GravatarVCLDEMO.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="GravatarDEMO;GravatarVCLDEMO"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="GravatarDEMO:Clean;GravatarVCLDEMO:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="GravatarDEMO:Make;GravatarVCLDEMO:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
