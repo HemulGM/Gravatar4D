@@ -1,0 +1,51 @@
+object Form7: TForm7
+  Left = 0
+  Top = 0
+  Caption = 'Form7'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object EditEmail: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 0
+    Text = 'alinvip22@gmail.com'
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 536.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object MemoResult: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 8.000000000000000000
+    Position.Y = 38.000000000000000000
+    Size.Width = 624.000000000000000000
+    Size.Height = 434.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Viewport.Width = 620.000000000000000000
+    Viewport.Height = 430.000000000000000000
+  end
+  object ButtonGet: TButton
+    Position.X = 552.000000000000000000
+    Position.Y = 8.000000000000000000
+    TabOrder = 2
+    Text = 'ButtonGet'
+    TextSettings.Trimming = None
+    OnClick = ButtonGetClick
+  end
+  object ImageAvatar: TImage
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 488.000000000000000000
+    Position.Y = 328.000000000000000000
+    Size.Width = 130.000000000000000000
+    Size.Height = 130.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

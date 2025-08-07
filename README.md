@@ -12,11 +12,11 @@ A lightweight and easy-to-use Delphi component for interacting with the Gravatar
 - ✅ Gravatar profile retrieval
 - ✅ Proper error handling
 - ✅ No external dependencies (uses Delphi's built-in components)
-- ✅ Tested on Delphi 12.3 but should work from XE8 onwards
+- ✅ Tested on Delphi 12.3 but should work from D10.3 onwards
 
 ## Installation
 
-Simply add `GravatarClient.pas` to your Delphi project. The unit has no external dependencies beyond the standard Delphi libraries.
+Simply add `Gravatar.API.pas` to your Delphi project. The unit has no external dependencies beyond the standard Delphi libraries.
 
 ## Getting Started
 
@@ -26,16 +26,13 @@ Simply add `GravatarClient.pas` to your Delphi project. The unit has no external
 
 ```pascal
 uses
-  GravatarClient;
+  Gravatar.API;
 
-var
-  Gravatar: TGravatarClient;
-  AvatarUrl: string;
 begin
-  Gravatar := TGravatarClient.Create;
+  var Gravatar := TGravatarAPI.Create;
   try
     // Get avatar URL for an email address, if you want to use image directly or in a web page
-    AvatarUrl := Gravatar.GetAvatarUrl('example@example.com', 100, 'identicon');
+    var AvatarUrl := Gravatar.GetAvatarUrl('example@example.com', 100, 'identicon');
     Writeln('Avatar URL: ' + AvatarUrl);
   finally
     Gravatar.Free;
@@ -47,25 +44,16 @@ end;
 
 ```pascal
 uses
-  GravatarClient, Vcl.Graphics, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage;
-
-var
-  Gravatar: TGravatarClient;
-  Avatar: TGraphic;
-  ImageType: TGravatarImageType;   
+  Gravatar.API;
+ 
 begin
-  Gravatar := TGravatarClient.Create;
+  var Gravatar := TGravatarAPI.Create;
   try
-    // Load avatar into a TGraphic object
-    Avatar := Gravatar.LoadAvatar('example@example.com', ImageType, 100, 'identicon');
+    // Load avatar into a TMemoryStream (or other stream) object
+    var Avatar := TMemoryStream.Create;
     try
-  	  //if you want to know file type, check "ImageType"
-	  case ImageType of
-	    gitPNG: lAvatar.SaveToFile('avatar.png');
-	    gitJPG: lAvatar.SaveToFile('avatar.jpg');
-	    else
-		  lAvatar.SaveToFile('avatar.bmp');
-	  end;
+      API.GetAvatar('example@example.com', Avatar, 100);
+      ImageAvatar.Bitmap.LoadFromStream(Avatar);
     finally
       Avatar.Free;
     end;
@@ -79,17 +67,18 @@ end;
 
 ```pascal
 uses
-  GravatarClient, System.SysUtils;
+  Gravatar.API;
 
-var
-  Gravatar: TGravatarClient;
-  Profile: TGravatarProfile;
-  Account: TGravatarAccount;
 begin
-  Gravatar := TGravatarClient.Create;
+  var Gravatar := TGravatarAPI.Create;
   try
-    if Gravatar.GetProfile('example@example.com', Profile) then
-    begin
+    var Profiles := Gravatar.GetProfile('example@example.com');
+    try
+      if Length(Profiles.Entry) < 1 then
+        raise Exception.Create('Profile not found');
+
+      var Profile := Profiles.Entry[0];
+
       Writeln('Display Name: ' + Profile.DisplayName);
       Writeln('Profile URL: ' + Profile.ProfileUrl);
       Writeln('Thumbnail URL: ' + Profile.ThumbnailUrl);
@@ -97,14 +86,12 @@ begin
       Writeln('Current Location: ' + Profile.CurrentLocation);
       
       Writeln(#13#10'Connected Accounts:');
-      for Account in Profile.Accounts do
+      for var Account in Profile.Accounts do
       begin
         Writeln(Format('- %s (%s): %s', [Account.Name, Account.Domain, Account.URL]));
       end;
-    end
-    else
-    begin
-      Writeln('Profile not found');
+    finally
+      Profiles.Free;
     end;
   finally
     Gravatar.Free;

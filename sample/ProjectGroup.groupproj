@@ -6,7 +6,7 @@
         <Projects Include="GravatarDEMO.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="GravatarVCLDEMO.dproj">
+        <Projects Include="FMX\GravatarFMX.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +26,23 @@
     <Target Name="GravatarDEMO:Make">
         <MSBuild Projects="GravatarDEMO.dproj" Targets="Make"/>
     </Target>
-    <Target Name="GravatarVCLDEMO">
-        <MSBuild Projects="GravatarVCLDEMO.dproj"/>
+    <Target Name="GravatarFMX">
+        <MSBuild Projects="FMX\GravatarFMX.dproj"/>
     </Target>
-    <Target Name="GravatarVCLDEMO:Clean">
-        <MSBuild Projects="GravatarVCLDEMO.dproj" Targets="Clean"/>
+    <Target Name="GravatarFMX:Clean">
+        <MSBuild Projects="FMX\GravatarFMX.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="GravatarVCLDEMO:Make">
-        <MSBuild Projects="GravatarVCLDEMO.dproj" Targets="Make"/>
+    <Target Name="GravatarFMX:Make">
+        <MSBuild Projects="FMX\GravatarFMX.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="GravatarDEMO;GravatarVCLDEMO"/>
+        <CallTarget Targets="GravatarDEMO;GravatarFMX"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="GravatarDEMO:Clean;GravatarVCLDEMO:Clean"/>
+        <CallTarget Targets="GravatarDEMO:Clean;GravatarFMX:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="GravatarDEMO:Make;GravatarVCLDEMO:Make"/>
+        <CallTarget Targets="GravatarDEMO:Make;GravatarFMX:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
