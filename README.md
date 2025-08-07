@@ -8,7 +8,7 @@ A lightweight and easy-to-use Delphi component for interacting with the Gravatar
 
 - ✅ SHA256 email hashing (following Gravatar specifications)
 - ✅ Avatar URL generation
-- ✅ Avatar image loading (JPG, PNG)
+- ✅ Avatar image loading to *Stream
 - ✅ Gravatar profile retrieval
 - ✅ Proper error handling
 - ✅ No external dependencies (uses Delphi's built-in components)
