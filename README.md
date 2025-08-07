@@ -1,8 +1,8 @@
-# Delphi Gravatar Client
+# Delphi Gravatar Client (Cross-platform)
 
 ![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
-A lightweight and easy-to-use Delphi component for interacting with the Gravatar API. This client implements the official Gravatar API specifications (v3.0.0) with proper email hashing, profile retrieval, and avatar handling.
+A lightweight and easy-to-use Delphi cross-platform library for interacting with the Gravatar API. This client implements the official Gravatar API specifications (v3.0.0) with proper email hashing, profile retrieval, and avatar handling.
 
 ## Features
 
