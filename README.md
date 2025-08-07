@@ -116,12 +116,6 @@ This is handled internally by the `GetEmailHash` method, so you don't need to wo
 - Profile API requests are subject to rate limits (1000 requests per hour with API key)
 - The client doesn't currently handle rate limit headers automatically, but you can check response headers in your application
 
-### Error Handling
-
-The client raises specific exceptions for errors:
-- `EGravatar` exceptions for avatar loading failures
-- Profile retrieval returns `False` when the profile isn't found
-
 ## Troubleshooting
 
 ### Common Issues
